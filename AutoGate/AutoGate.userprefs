@@ -1,0 +1,12 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.Workbench ActiveDocument="AutoGate\ModEntry.cs">
+    <Files>
+      <File FileName="AutoGate\ModEntry.cs" Line="69" Column="40" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+</Properties>
