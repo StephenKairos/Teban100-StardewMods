@@ -1,5 +1,0 @@
-C:\Users\steph\Documents\Projects\RopeBridge\RopeBridge\bin\Debug\RopeBridge.dll
-C:\Users\steph\Documents\Projects\RopeBridge\RopeBridge\bin\Debug\RopeBridge.pdb
-C:\Users\steph\Documents\Projects\RopeBridge\RopeBridge\obj\Debug\RopeBridge.csprojResolveAssemblyReference.cache
-C:\Users\steph\Documents\Projects\RopeBridge\RopeBridge\obj\Debug\RopeBridge.dll
-C:\Users\steph\Documents\Projects\RopeBridge\RopeBridge\obj\Debug\RopeBridge.pdb
