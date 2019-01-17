@@ -1,5 +1,0 @@
-C:\Users\steph\Documents\Projects\InventoryCycle\InventoryCycle\bin\Debug\InventoryCycle.dll
-C:\Users\steph\Documents\Projects\InventoryCycle\InventoryCycle\bin\Debug\InventoryCycle.pdb
-C:\Users\steph\Documents\Projects\InventoryCycle\InventoryCycle\obj\Debug\InventoryCycle.csprojResolveAssemblyReference.cache
-C:\Users\steph\Documents\Projects\InventoryCycle\InventoryCycle\obj\Debug\InventoryCycle.dll
-C:\Users\steph\Documents\Projects\InventoryCycle\InventoryCycle\obj\Debug\InventoryCycle.pdb
