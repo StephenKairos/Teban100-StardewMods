@@ -1,23 +1,10 @@
-﻿using System;
-using StardewModdingAPI;
-using StardewModdingAPI.Events;
-using StardewValley;
-using Microsoft.Xna.Framework;
-using StardewValley.Menus;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework.Input;
+﻿using StardewModdingAPI;
 
 namespace InventoryCycle
 {
 	public class ModConfig
 	{
-		public Keys frontCycleKeyASCIINumber { get; set; }
-		public Keys backCycleKeyASCIINumber { get; set; }
-
-		public ModConfig()
-		{
-			this.frontCycleKeyASCIINumber = Keys.E;
-			this.backCycleKeyASCIINumber = Keys.Q;
-		}
+		public SButton frontCycleKeyASCIINumber { get; set; } = SButton.E;
+		public SButton backCycleKeyASCIINumber { get; set; } = SButton.Q;
 	}
 }

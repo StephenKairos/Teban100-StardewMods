@@ -2,54 +2,49 @@
 using StardewModdingAPI.Events;
 using StardewValley;
 using Microsoft.Xna.Framework;
-using System;
 using StardewValley.Locations;
 using xTile.Tiles;
 using xTile.Layers;
-using xTile.Dimensions;
 using xTile.ObjectModel;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using System.Collections;
 
 namespace RopeBridge
 {
 	/// <summary>The mod entry point.</summary>
 	public class ModEntry : Mod
 	{
-
+		/*********
+		** Fields
+		*********/
 		//This is the tile property that says a Tile is "Passable" AKA can be walked through
 		public PropertyValue propValue = new PropertyValue("Passable");
 
 		//This is the tile list of all the ladders to check if they've been made passable or not
 		public SerializableDictionary<Vector2, Tile> ladderList = new SerializableDictionary<Vector2, Tile>();
 
+
 		/*********
 		** Public methods
 		*********/
-		/// <summary>Initialise the mod.</summary>
-		/// <param name="helper">Provides methods for interacting with the mod directory, such as read/writing a config file or custom JSON files.</param>
+		/// <summary>The mod entry point, called after the mod is first loaded.</summary>
+		/// <param name="helper">Provides simplified APIs for writing mods.</param>
 		public override void Entry(IModHelper helper)
 		{
-			MineEvents.MineLevelChanged += this.EnteredNewLevel;
-			LocationEvents.LocationObjectsChanged += this.CreatedStairs;
+			helper.Events.Player.Warped += this.OnWarped;
+			helper.Events.World.ObjectListChanged += this.OnObjectListChanged;
 		}
 
 
 		/*********
 		** Private methods
 		*********/
-		/// <summary>The method invoked when the player presses a keyboard button.</summary>
+		/// <summary>Raised after a player warps to a new location.</summary>
 		/// <param name="sender">The event sender.</param>
 		/// <param name="e">The event data.</param>
-		private void ReceiveKeyPress(object sender, EventArgsKeyPressed e)
+		private void OnWarped(object sender, WarpedEventArgs e)
 		{
-			this.Monitor.Log($"Player pressed {e.KeyPressed}.");
-		}
-
-		private void EnteredNewLevel(object sender, EventArgsMineLevelChanged e)
-		{
-			if (Game1.currentLocation is MineShaft)
+			// make ladders passable
+			if (e.IsLocalPlayer && Game1.currentLocation is MineShaft)
 			{
 				ladderList = new SerializableDictionary<Vector2, Tile>();
 
@@ -68,9 +63,13 @@ namespace RopeBridge
 			}
 		}
 
-		private void CreatedStairs(object sender, EventArgsLocationObjectsChanged e)
+		/// <summary>Raised after objects are added or removed in a location.</summary>
+		/// <param name="sender">The event sender.</param>
+		/// <param name="e">The event data.</param>
+		private void OnObjectListChanged(object sender, ObjectListChangedEventArgs e)
 		{
-			if (Game1.currentLocation is MineShaft)
+			// detect new ladders
+			if (e.IsCurrentLocation && Game1.currentLocation is MineShaft)
 			{
 				Layer currentLayer = Game1.currentLocation.map.GetLayer("Buildings");
 				for (int yTile = 0; yTile < currentLayer.LayerHeight; yTile++)

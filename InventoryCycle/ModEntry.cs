@@ -1,33 +1,30 @@
-﻿using System;
-using StardewModdingAPI;
+﻿using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
-using Microsoft.Xna.Framework;
 using StardewValley.Menus;
 using System.Collections.Generic;
-using Microsoft.Xna.Framework.Input;
+using System.Linq;
 
 namespace InventoryCycle
 {
 	/// <summary>The mod entry point.</summary>
 	public class ModEntry : Mod
 	{
-
 		/*********
-		** Public Variables
+		** Fields
 		*********/
-		Keys frontKey = Keys.E;
-		Keys backKey = Keys.Q;
+		private SButton frontKey = SButton.E;
+		private SButton backKey = SButton.Q;
+
 
 		/*********
 		** Public methods
 		*********/
-		/// <summary>Initialise the mod.</summary>
-		/// <param name="helper">Provides methods for interacting with the mod directory, such as read/writing a config file or custom JSON files.</param>
+		/// <summary>The mod entry point, called after the mod is first loaded.</summary>
+		/// <param name="helper">Provides simplified APIs for writing mods.</param>
 		public override void Entry(IModHelper helper)
 		{
-			ControlEvents.KeyPressed += this.ReceiveKeyPress;
-
+			helper.Events.Input.ButtonPressed += this.OnButtonPressed;
 
 			ModConfig config = helper.ReadConfig<ModConfig>();
 
@@ -41,14 +38,14 @@ namespace InventoryCycle
 		/*********
 		** Private methods
 		*********/
-		/// <summary>The method invoked when the player presses a keyboard button.</summary>
+		/// <summary>Raised after the player presses a button on the keyboard, controller, or mouse.</summary>
 		/// <param name="sender">The event sender.</param>
 		/// <param name="e">The event data.</param>
-		private void ReceiveKeyPress(object sender, EventArgsKeyPressed e)
+		private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
 		{
-			if (e.KeyPressed.Equals(frontKey))
+			if (e.Button == frontKey)
 			{
-				Item[] oldInventory = Game1.player.items.ToArray();
+				Item[] oldInventory = Game1.player.Items.ToArray();
 				List<Item> newInventory = new List<Item>();
 				for (int i = 12; i < oldInventory.Length; i++)
 				{
@@ -65,9 +62,9 @@ namespace InventoryCycle
 					Game1.activeClickableMenu = new GameMenu();
 				}
 			}
-			else if (e.KeyPressed.Equals(backKey))
+			else if (e.Button == backKey)
 			{
-				Item[] oldInventory = Game1.player.items.ToArray();
+				Item[] oldInventory = Game1.player.Items.ToArray();
 				List<Item> newInventory = new List<Item>();
 				for (int i = 24; i < oldInventory.Length; i++)
 				{
