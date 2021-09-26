@@ -3,6 +3,7 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
+using StardewModdingAPI.Utilities;
 using StardewValley;
 using SObject = StardewValley.Object;
 
@@ -15,10 +16,10 @@ namespace AutoGate
         ** Fields
         *********/
         /// <summary>The gates in the current location.</summary>
-        private readonly Dictionary<Vector2, SObject> Gates = new SerializableDictionary<Vector2, SObject>();
+        private readonly PerScreen<Dictionary<Vector2, SObject>> Gates = new PerScreen<Dictionary<Vector2, Object>>(() => new SerializableDictionary<Vector2, SObject>());
 
         /// <summary>The last player tile position for which we checked for gates.</summary>
-        private Vector2 LastPlayerTile = new Vector2(-1);
+        private readonly PerScreen<Vector2> LastPlayerTile = new PerScreen<Vector2>(() => new Vector2(-1));
 
 
         /*********
@@ -60,20 +61,20 @@ namespace AutoGate
         private void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
         {
             // skip if nothing to do
-            if (!Context.IsWorldReady || !this.Gates.Any())
+            if (!Context.IsWorldReady || !this.Gates.Value.Any())
                 return;
 
             // skip if we already handled gates from this tile
             {
                 Vector2 playerTile = Game1.player.getTileLocation();
-                if (playerTile == this.LastPlayerTile)
+                if (playerTile == this.LastPlayerTile.Value)
                     return;
-                this.LastPlayerTile = playerTile;
+                this.LastPlayerTile.Value = playerTile;
             }
 
             // update all gates
             var adjacentTiles = new HashSet<Vector2>(Utility.getAdjacentTileLocations(Game1.player.getTileLocation()));
-            foreach (var pair in this.Gates)
+            foreach (var pair in this.Gates.Value)
             {
                 Vector2 tile = pair.Key;
                 SObject gate = pair.Value;
@@ -86,8 +87,8 @@ namespace AutoGate
         /// <summary>Reset the gate cache for the current location.</summary>
         private void ResetGateList()
         {
-            this.Gates.Clear();
-            this.LastPlayerTile = new Vector2(-1);
+            this.Gates.Value.Clear();
+            this.LastPlayerTile.Value = new Vector2(-1);
 
             foreach (var pair in Game1.currentLocation.objects.Pairs)
             {
@@ -95,7 +96,7 @@ namespace AutoGate
                 SObject obj = pair.Value;
 
                 if (obj.Name == "Gate")
-                    this.Gates[tile] = obj;
+                    this.Gates.Value[tile] = obj;
             }
         }
     }
