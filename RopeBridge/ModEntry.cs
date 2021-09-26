@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
@@ -21,6 +22,7 @@ namespace RopeBridge
         {
             helper.Events.Player.Warped += this.OnWarped;
             helper.Events.World.ObjectListChanged += this.OnObjectListChanged;
+            helper.Events.World.NpcListChanged += this.OnNpcListChanged;
         }
 
 
@@ -42,6 +44,15 @@ namespace RopeBridge
         private void OnObjectListChanged(object sender, ObjectListChangedEventArgs e)
         {
             if (e.IsCurrentLocation)
+                this.FixLadders();
+        }
+
+        /// <summary>Raised after NPCs are added or removed in a location.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
+        private void OnNpcListChanged(object sender, NpcListChangedEventArgs e)
+        {
+            if (e.IsCurrentLocation && e.Removed.Any())
                 this.FixLadders();
         }
 
