@@ -3,6 +3,7 @@
 # Release notes
 ## Upcoming release
 * Updated for SMAPI 3.0 and Stardew Valley 1.3.33.
+* Gates now open immediately when approached, without a half-second delay.
 * Added update keys.
 * Internal refactoring.
 

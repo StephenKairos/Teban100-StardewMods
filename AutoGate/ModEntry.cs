@@ -17,6 +17,9 @@ namespace AutoGate
         /// <summary>The gates in the current location.</summary>
         private readonly Dictionary<Vector2, SObject> Gates = new SerializableDictionary<Vector2, SObject>();
 
+        /// <summary>The last player tile position for which we checked for gates.</summary>
+        private Vector2 LastPlayerTile = new Vector2(-1);
+
 
         /*********
         ** Public methods
@@ -56,10 +59,20 @@ namespace AutoGate
         /// <param name="e">The event data.</param>
         private void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
         {
+            // skip if nothing to do
             if (!Context.IsWorldReady || !this.Gates.Any())
                 return;
 
-            var adjacent = new HashSet<Vector2>(Utility.getAdjacentTileLocations(Game1.player.getTileLocation()));
+            // skip if we already handled gates from this tile
+            {
+                Vector2 playerTile = Game1.player.getTileLocation();
+                if (playerTile == this.LastPlayerTile)
+                    return;
+                this.LastPlayerTile = playerTile;
+            }
+
+            // update all gates
+            var adjacentTiles = new HashSet<Vector2>(Utility.getAdjacentTileLocations(Game1.player.getTileLocation()));
             foreach (var pair in this.Gates)
             {
                 Vector2 tile = pair.Key;
@@ -74,6 +87,7 @@ namespace AutoGate
         private void ResetGateList()
         {
             this.Gates.Clear();
+            this.LastPlayerTile = new Vector2(-1);
 
             foreach (var pair in Game1.currentLocation.objects.Pairs)
             {
