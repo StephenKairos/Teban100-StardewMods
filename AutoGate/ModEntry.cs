@@ -9,7 +9,7 @@ namespace AutoGate
 {
     public class ModEntry : Mod
     {
-        public SerializableDictionary<Vector2, SObject> gateList;
+        public SerializableDictionary<Vector2, SObject> GateList;
 
         /// <summary>The mod entry point, called after the mod is first loaded.</summary>
         /// <param name="helper">Provides simplified APIs for writing mods.</param>
@@ -28,13 +28,13 @@ namespace AutoGate
             if (!e.IsLocalPlayer)
                 return;
 
-            this.gateList = new SerializableDictionary<Vector2, SObject>();
+            this.GateList = new SerializableDictionary<Vector2, SObject>();
             OverlaidDictionary objects = Game1.currentLocation.objects;
             foreach (Vector2 key in objects.Keys)
             {
                 if (objects[key].name.Equals("Gate"))
                 {
-                    this.gateList.Add(key, objects[key]);
+                    this.GateList.Add(key, objects[key]);
                     //this.Monitor.Log(string.Format("{0}", (object)key.ToString()), (LogLevel)1);
                 }
             }
@@ -45,14 +45,14 @@ namespace AutoGate
         /// <param name="e">The event data.</param>
         private void OnObjectListChanged(object sender, ObjectListChangedEventArgs e)
         {
-            this.gateList = new SerializableDictionary<Vector2, SObject>();
+            this.GateList = new SerializableDictionary<Vector2, SObject>();
             OverlaidDictionary objects = Game1.currentLocation.objects;
 
             foreach (Vector2 key in objects.Keys)
             {
                 if (objects[key].name.Equals("Gate"))
                 {
-                    this.gateList.Add(key, objects[key]);
+                    this.GateList.Add(key, objects[key]);
                     //this.Monitor.Log(string.Format("{0}", (object)key.ToString()), (LogLevel)1);
                 }
             }
@@ -65,11 +65,11 @@ namespace AutoGate
         {
             if (!e.IsMultipleOf(30)) // half-second tick
                 return;
-            if (!Context.IsWorldReady || gateList == null)
+            if (!Context.IsWorldReady || GateList == null)
                 return;
 
             Vector2[] array = Utility.getAdjacentTileLocations(Game1.player.getTileLocation()).ToArray();
-            foreach (Vector2 key in this.gateList.Keys)
+            foreach (Vector2 key in this.GateList.Keys)
             {
                 bool flag = false;
                 foreach (Vector2 other in array)

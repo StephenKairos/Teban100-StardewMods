@@ -13,8 +13,8 @@ namespace InventoryCycle
         /*********
         ** Fields
         *********/
-        private SButton frontKey = SButton.E;
-        private SButton backKey = SButton.Q;
+        private SButton FrontKey = SButton.E;
+        private SButton BackKey = SButton.Q;
 
 
         /*********
@@ -28,10 +28,10 @@ namespace InventoryCycle
 
             ModConfig config = helper.ReadConfig<ModConfig>();
 
-            this.frontKey = config.frontCycleKeyASCIINumber;
-            this.backKey = config.backCycleKeyASCIINumber;
+            this.FrontKey = config.FrontCycleKey;
+            this.BackKey = config.BackCycleKey;
 
-            this.Monitor.Log($"Loaded Cycle Keys as: \n For cycling forward: {frontKey.ToString()} \n For cycling backward {backKey.ToString()}");
+            this.Monitor.Log($"Loaded Cycle Keys as: \n For cycling forward: {this.FrontKey} \n For cycling backward {this.BackKey}");
         }
 
 
@@ -43,7 +43,7 @@ namespace InventoryCycle
         /// <param name="e">The event data.</param>
         private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
         {
-            if (e.Button == frontKey)
+            if (e.Button == FrontKey)
             {
                 Item[] oldInventory = Game1.player.Items.ToArray();
                 List<Item> newInventory = new List<Item>();
@@ -62,7 +62,7 @@ namespace InventoryCycle
                     Game1.activeClickableMenu = new GameMenu();
                 }
             }
-            else if (e.Button == backKey)
+            else if (e.Button == BackKey)
             {
                 Item[] oldInventory = Game1.player.Items.ToArray();
                 List<Item> newInventory = new List<Item>();

@@ -17,10 +17,10 @@ namespace RopeBridge
         ** Fields
         *********/
         //This is the tile property that says a Tile is "Passable" AKA can be walked through
-        public PropertyValue propValue = new PropertyValue("Passable");
+        public PropertyValue PropValue = new PropertyValue("Passable");
 
         //This is the tile list of all the ladders to check if they've been made passable or not
-        public SerializableDictionary<Vector2, Tile> ladderList = new SerializableDictionary<Vector2, Tile>();
+        public SerializableDictionary<Vector2, Tile> LadderList = new SerializableDictionary<Vector2, Tile>();
 
 
         /*********
@@ -46,7 +46,7 @@ namespace RopeBridge
             // make ladders passable
             if (e.IsLocalPlayer && Game1.currentLocation is MineShaft)
             {
-                ladderList = new SerializableDictionary<Vector2, Tile>();
+                LadderList = new SerializableDictionary<Vector2, Tile>();
 
                 Layer currentLayer = Game1.currentLocation.map.GetLayer("Buildings");
                 for (int yTile = 0; yTile < currentLayer.LayerHeight; yTile++)
@@ -56,7 +56,7 @@ namespace RopeBridge
                         Tile currentTile = currentLayer.Tiles[xTile, yTile];
                         if (currentTile != null && currentTile.TileIndex == 173)
                         {
-                            Game1.currentLocation.map.GetLayer("Buildings").Tiles[xTile, yTile].TileIndexProperties.Add(new KeyValuePair<string, PropertyValue>("Passable", propValue));
+                            Game1.currentLocation.map.GetLayer("Buildings").Tiles[xTile, yTile].TileIndexProperties.Add(new KeyValuePair<string, PropertyValue>("Passable", PropValue));
                         }
                     }
                 }
@@ -77,10 +77,10 @@ namespace RopeBridge
                     for (int xTile = 0; xTile < currentLayer.LayerWidth; xTile++)
                     {
                         Tile currentTile = currentLayer.Tiles[xTile, yTile];
-                        if (currentTile != null && currentTile.TileIndex == 173 && !ladderList.ContainsKey(new Vector2(xTile, yTile)))
+                        if (currentTile != null && currentTile.TileIndex == 173 && !LadderList.ContainsKey(new Vector2(xTile, yTile)))
                         {
-                            ladderList.Add(new Vector2(xTile, yTile), currentTile);
-                            Game1.currentLocation.map.GetLayer("Buildings").Tiles[xTile, yTile].TileIndexProperties.Add(new KeyValuePair<string, PropertyValue>("Passable", propValue));
+                            LadderList.Add(new Vector2(xTile, yTile), currentTile);
+                            Game1.currentLocation.map.GetLayer("Buildings").Tiles[xTile, yTile].TileIndexProperties.Add(new KeyValuePair<string, PropertyValue>("Passable", PropValue));
                         }
                     }
                 }
