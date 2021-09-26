@@ -4,7 +4,7 @@
 ## Upcoming release
 * Updated for Stardew Valley 1.5.
 * Added update keys.
-* Fixed ladders dropped by a monster not immediately passable.
+* Fixed ladders dropped by a monster or placed with a staircase not immediately passable.
 * Internal refactoring.
 
 ## 1.0.0

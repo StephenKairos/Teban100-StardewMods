@@ -7,6 +7,7 @@ using StardewValley.Locations;
 using xTile.Layers;
 using xTile.ObjectModel;
 using xTile.Tiles;
+using SObject = StardewValley.Object;
 
 namespace RopeBridge
 {
@@ -23,13 +24,14 @@ namespace RopeBridge
             helper.Events.Player.Warped += this.OnWarped;
             helper.Events.World.ObjectListChanged += this.OnObjectListChanged;
             helper.Events.World.NpcListChanged += this.OnNpcListChanged;
+            helper.Events.Player.InventoryChanged += this.OnInventoryChanged;
         }
 
 
         /*********
         ** Private methods
         *********/
-        /// <summary>Raised after a player warps to a new location.</summary>
+        /// <inheritdoc cref="IPlayerEvents.Warped"/>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event data.</param>
         private void OnWarped(object sender, WarpedEventArgs e)
@@ -38,7 +40,24 @@ namespace RopeBridge
                 this.FixLadders();
         }
 
-        /// <summary>Raised after objects are added or removed in a location.</summary>
+        /// <inheritdoc cref="IPlayerEvents.InventoryChanged"/>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
+        private void OnInventoryChanged(object sender, InventoryChangedEventArgs e)
+        {
+            bool usedStaircase =
+                e.IsLocalPlayer
+                && Game1.currentLocation is MineShaft
+                && (
+                    e.Removed.Any(this.IsStaircase)
+                    || e.QuantityChanged.Any(p => p.NewSize < p.OldSize && this.IsStaircase(p.Item))
+                );
+
+            if (usedStaircase)
+                this.FixLadders();
+        }
+
+        /// <inheritdoc cref="IWorldEvents.ObjectListChanged"/>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event data.</param>
         private void OnObjectListChanged(object sender, ObjectListChangedEventArgs e)
@@ -47,7 +66,7 @@ namespace RopeBridge
                 this.FixLadders();
         }
 
-        /// <summary>Raised after NPCs are added or removed in a location.</summary>
+        /// <inheritdoc cref="IWorldEvents.NpcListChanged"/>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event data.</param>
         private void OnNpcListChanged(object sender, NpcListChangedEventArgs e)
@@ -75,6 +94,16 @@ namespace RopeBridge
                     }
                 }
             }
+        }
+
+        /// <summary>Get whether an item is a staircase.</summary>
+        /// <param name="item">The item to check.</param>
+        private bool IsStaircase(Item item)
+        {
+            return
+                item is SObject obj
+                && obj.bigCraftable.Value
+                && obj.ParentSheetIndex == 71;
         }
     }
 }
