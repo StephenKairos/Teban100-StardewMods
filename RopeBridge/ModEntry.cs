@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
@@ -13,16 +12,6 @@ namespace RopeBridge
     /// <summary>The mod entry point.</summary>
     internal class ModEntry : Mod
     {
-        /*********
-        ** Fields
-        *********/
-        //This is the tile property that says a Tile is "Passable" AKA can be walked through
-        public PropertyValue PropValue = new PropertyValue("Passable");
-
-        //This is the tile list of all the ladders to check if they've been made passable or not
-        public SerializableDictionary<Vector2, Tile> LadderList = new SerializableDictionary<Vector2, Tile>();
-
-
         /*********
         ** Public methods
         *********/
@@ -43,24 +32,8 @@ namespace RopeBridge
         /// <param name="e">The event data.</param>
         private void OnWarped(object sender, WarpedEventArgs e)
         {
-            // make ladders passable
-            if (e.IsLocalPlayer && Game1.currentLocation is MineShaft)
-            {
-                LadderList = new SerializableDictionary<Vector2, Tile>();
-
-                Layer currentLayer = Game1.currentLocation.map.GetLayer("Buildings");
-                for (int yTile = 0; yTile < currentLayer.LayerHeight; yTile++)
-                {
-                    for (int xTile = 0; xTile < currentLayer.LayerWidth; xTile++)
-                    {
-                        Tile currentTile = currentLayer.Tiles[xTile, yTile];
-                        if (currentTile != null && currentTile.TileIndex == 173)
-                        {
-                            Game1.currentLocation.map.GetLayer("Buildings").Tiles[xTile, yTile].TileIndexProperties.Add(new KeyValuePair<string, PropertyValue>("Passable", PropValue));
-                        }
-                    }
-                }
-            }
+            if (e.IsLocalPlayer)
+                this.FixLadders();
         }
 
         /// <summary>Raised after objects are added or removed in a location.</summary>
@@ -68,20 +41,26 @@ namespace RopeBridge
         /// <param name="e">The event data.</param>
         private void OnObjectListChanged(object sender, ObjectListChangedEventArgs e)
         {
-            // detect new ladders
-            if (e.IsCurrentLocation && Game1.currentLocation is MineShaft)
+            if (e.IsCurrentLocation)
+                this.FixLadders();
+        }
+
+        /// <summary>Detect any ladders in the current location and mark them passable.</summary>
+        private void FixLadders()
+        {
+            if (Game1.currentLocation is MineShaft)
             {
-                Layer currentLayer = Game1.currentLocation.map.GetLayer("Buildings");
-                for (int yTile = 0; yTile < currentLayer.LayerHeight; yTile++)
+                Layer layer = Game1.currentLocation.map.GetLayer("Buildings");
+                if (layer == null)
+                    return;
+
+                for (int x = 0; x < layer.LayerWidth; x++)
                 {
-                    for (int xTile = 0; xTile < currentLayer.LayerWidth; xTile++)
+                    for (int y = 0; y < layer.LayerHeight; y++)
                     {
-                        Tile currentTile = currentLayer.Tiles[xTile, yTile];
-                        if (currentTile != null && currentTile.TileIndex == 173 && !LadderList.ContainsKey(new Vector2(xTile, yTile)))
-                        {
-                            LadderList.Add(new Vector2(xTile, yTile), currentTile);
-                            Game1.currentLocation.map.GetLayer("Buildings").Tiles[xTile, yTile].TileIndexProperties.Add(new KeyValuePair<string, PropertyValue>("Passable", PropValue));
-                        }
+                        Tile tile = layer.Tiles[x, y];
+                        if (tile?.TileIndex == 173)
+                            tile.TileIndexProperties.Add(new KeyValuePair<string, PropertyValue>("Passable", "T"));
                     }
                 }
             }
