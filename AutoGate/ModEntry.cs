@@ -65,15 +65,13 @@ namespace AutoGate
                 return;
 
             // skip if we already handled gates from this tile
-            {
-                Vector2 playerTile = Game1.player.getTileLocation();
-                if (playerTile == this.LastPlayerTile.Value)
-                    return;
-                this.LastPlayerTile.Value = playerTile;
-            }
+            Vector2 playerTile = Game1.player.getTileLocation();
+            if (playerTile == this.LastPlayerTile.Value)
+                return;
+            this.LastPlayerTile.Value = playerTile;
 
             // update all gates
-            var adjacentTiles = new HashSet<Vector2>(Utility.getAdjacentTileLocations(Game1.player.getTileLocation()));
+            var adjacentTiles = new HashSet<Vector2>(this.GetSearchTiles(playerTile));
             foreach (var pair in this.Gates.Value)
             {
                 Vector2 tile = pair.Key;
@@ -98,6 +96,15 @@ namespace AutoGate
                 if (obj.Name == "Gate")
                     this.Gates.Value[tile] = obj;
             }
+        }
+
+        /// <summary>Get all tiles to search for a gate.</summary>
+        /// <param name="tile">The tile from which to search for gates.</param>
+        private IEnumerable<Vector2> GetSearchTiles(Vector2 tile)
+        {
+            return Utility
+                .getAdjacentTileLocationsArray(tile)
+                .Concat(new[] { tile });
         }
     }
 }
