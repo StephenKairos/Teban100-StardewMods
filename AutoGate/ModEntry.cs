@@ -1,16 +1,26 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
-using StardewValley.Network;
 using SObject = StardewValley.Object;
 
 namespace AutoGate
 {
+    /// <summary>The mod entry class.</summary>
     internal class ModEntry : Mod
     {
-        public SerializableDictionary<Vector2, SObject> GateList;
+        /*********
+        ** Fields
+        *********/
+        /// <summary>The gates in the current location.</summary>
+        private readonly Dictionary<Vector2, SObject> Gates = new SerializableDictionary<Vector2, SObject>();
 
+
+        /*********
+        ** Public methods
+        *********/
         /// <summary>The mod entry point, called after the mod is first loaded.</summary>
         /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
@@ -20,24 +30,17 @@ namespace AutoGate
             helper.Events.GameLoop.UpdateTicked += this.OnUpdateTicked;
         }
 
+
+        /*********
+        ** Private methods
+        *********/
         /// <summary>Raised after a player warps to a new location.</summary>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event data.</param>
         private void OnWarped(object sender, WarpedEventArgs e)
         {
-            if (!e.IsLocalPlayer)
-                return;
-
-            this.GateList = new SerializableDictionary<Vector2, SObject>();
-            OverlaidDictionary objects = Game1.currentLocation.objects;
-            foreach (Vector2 key in objects.Keys)
-            {
-                if (objects[key].name.Equals("Gate"))
-                {
-                    this.GateList.Add(key, objects[key]);
-                    //this.Monitor.Log(string.Format("{0}", (object)key.ToString()), (LogLevel)1);
-                }
-            }
+            if (e.IsLocalPlayer)
+                this.ResetGateList();
         }
 
         /// <summary>Raised after objects are added or removed in a location.</summary>
@@ -45,17 +48,7 @@ namespace AutoGate
         /// <param name="e">The event data.</param>
         private void OnObjectListChanged(object sender, ObjectListChangedEventArgs e)
         {
-            this.GateList = new SerializableDictionary<Vector2, SObject>();
-            OverlaidDictionary objects = Game1.currentLocation.objects;
-
-            foreach (Vector2 key in objects.Keys)
-            {
-                if (objects[key].name.Equals("Gate"))
-                {
-                    this.GateList.Add(key, objects[key]);
-                    //this.Monitor.Log(string.Format("{0}", (object)key.ToString()), (LogLevel)1);
-                }
-            }
+            this.ResetGateList();
         }
 
         /// <summary>Raised after the game state is updated (≈60 times per second).</summary>
@@ -63,24 +56,32 @@ namespace AutoGate
         /// <param name="e">The event data.</param>
         private void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
         {
-            if (!e.IsMultipleOf(30)) // half-second tick
-                return;
-            if (!Context.IsWorldReady || GateList == null)
+            if (!Context.IsWorldReady || !this.Gates.Any())
                 return;
 
-            Vector2[] array = Utility.getAdjacentTileLocations(Game1.player.getTileLocation()).ToArray();
-            foreach (Vector2 key in this.GateList.Keys)
+            var adjacent = new HashSet<Vector2>(Utility.getAdjacentTileLocations(Game1.player.getTileLocation()));
+            foreach (var pair in this.Gates)
             {
-                bool flag = false;
-                foreach (Vector2 other in array)
-                {
-                    if (key.Equals(other) && !(Game1.currentLocation.objects)[key].isPassable())
-                        flag = true;
-                }
-                if (flag)
-                    Game1.currentLocation.objects[key].checkForAction(Game1.player, false);
-                else if ((Game1.currentLocation.objects)[key].isPassable())
-                    Game1.currentLocation.objects[key].checkForAction(Game1.player, false);
+                Vector2 tile = pair.Key;
+                SObject gate = pair.Value;
+
+                if (gate.isPassable() != adjacentTiles.Contains(tile))
+                    gate.checkForAction(Game1.player);
+            }
+        }
+
+        /// <summary>Reset the gate cache for the current location.</summary>
+        private void ResetGateList()
+        {
+            this.Gates.Clear();
+
+            foreach (var pair in Game1.currentLocation.objects.Pairs)
+            {
+                Vector2 tile = pair.Key;
+                SObject obj = pair.Value;
+
+                if (obj.Name == "Gate")
+                    this.Gates[tile] = obj;
             }
         }
     }
