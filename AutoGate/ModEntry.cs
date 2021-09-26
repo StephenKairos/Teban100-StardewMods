@@ -2,8 +2,8 @@
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
-using SObject = StardewValley.Object;
 using StardewValley.Network;
+using SObject = StardewValley.Object;
 
 namespace AutoGate
 {
@@ -47,7 +47,7 @@ namespace AutoGate
         {
             this.gateList = new SerializableDictionary<Vector2, SObject>();
             OverlaidDictionary objects = Game1.currentLocation.objects;
-            
+
             foreach (Vector2 key in objects.Keys)
             {
                 if (objects[key].name.Equals("Gate"))
