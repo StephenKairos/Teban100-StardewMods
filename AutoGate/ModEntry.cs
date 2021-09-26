@@ -7,7 +7,7 @@ using SObject = StardewValley.Object;
 
 namespace AutoGate
 {
-    public class ModEntry : Mod
+    internal class ModEntry : Mod
     {
         public SerializableDictionary<Vector2, SObject> GateList;
 

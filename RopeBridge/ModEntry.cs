@@ -11,7 +11,7 @@ using xTile.Tiles;
 namespace RopeBridge
 {
     /// <summary>The mod entry point.</summary>
-    public class ModEntry : Mod
+    internal class ModEntry : Mod
     {
         /*********
         ** Fields
