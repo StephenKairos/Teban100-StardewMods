@@ -7,7 +7,7 @@ No more being blocked from parts of the mine floor!
 
 ## Install
 1. [Install the latest version of SMAPI](https://smapi.io/).
-2. [Install this mod from Nexus Mods](https://www.nexusmods.com/stardewvalley/mods/824).
+2. ~~[Install this mod from Nexus Mods](https://www.nexusmods.com/stardewvalley/mods/824)~~ [Install the latest unofficial update for this mod](https://smapi.io/mods/#Rope_Bridge).
 3. Run the game using SMAPI.
 
 ## Use

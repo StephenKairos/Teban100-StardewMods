@@ -1,7 +1,9 @@
 ﻿← [back to readme](README.md)
 
 # Release notes
-## Upcoming release
+## 1.2.0
+Released 01 October 2021 for SMAPI 3.12.0 or later.
+
 * Updated for Stardew Valley 1.5 (including split-screen mode).
 * Gates now open immediately when approached, without a half-second delay.
 * Added update keys.
@@ -9,7 +11,7 @@
 * Internal refactoring.
 
 ## 1.1.0
-Released 12 June 2018.
+Released 12 June 2018 for SMAPI 2.5.5 or later.
 
 * Updated for Stardew Valley 1.3.
 
