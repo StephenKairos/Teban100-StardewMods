@@ -16,7 +16,7 @@ namespace AutoGate
         ** Fields
         *********/
         /// <summary>The gates in the current location.</summary>
-        private readonly PerScreen<Dictionary<Vector2, Fence>> Gates = new(() => new SerializableDictionary<Vector2, Fence>());
+        private readonly PerScreen<Dictionary<Vector2, Fence>> Gates = new(() => new());
 
         /// <summary>The last player tile position for which we checked for gates.</summary>
         private readonly PerScreen<Vector2> LastPlayerTile = new(() => new Vector2(-1));
