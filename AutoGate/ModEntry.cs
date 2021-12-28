@@ -25,8 +25,7 @@ namespace AutoGate
         /*********
         ** Public methods
         *********/
-        /// <summary>The mod entry point, called after the mod is first loaded.</summary>
-        /// <param name="helper">Provides simplified APIs for writing mods.</param>
+        /// <inheritdoc />
         public override void Entry(IModHelper helper)
         {
             helper.Events.Player.Warped += this.OnWarped;
@@ -38,7 +37,7 @@ namespace AutoGate
         /*********
         ** Private methods
         *********/
-        /// <summary>Raised after a player warps to a new location.</summary>
+        /// <inheritdoc cref="IPlayerEvents.Warped"/>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event data.</param>
         private void OnWarped(object sender, WarpedEventArgs e)
@@ -47,7 +46,7 @@ namespace AutoGate
                 this.ResetGateList();
         }
 
-        /// <summary>Raised after objects are added or removed in a location.</summary>
+        /// <inheritdoc cref="IWorldEvents.ObjectListChanged"/>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event data.</param>
         private void OnObjectListChanged(object sender, ObjectListChangedEventArgs e)
@@ -55,7 +54,7 @@ namespace AutoGate
             this.ResetGateList();
         }
 
-        /// <summary>Raised after the game state is updated (≈60 times per second).</summary>
+        /// <inheritdoc cref="IGameLoopEvents.UpdateTicked"/>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event data.</param>
         private void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
