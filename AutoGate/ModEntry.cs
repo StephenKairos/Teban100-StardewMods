@@ -16,10 +16,10 @@ namespace AutoGate
         ** Fields
         *********/
         /// <summary>The gates in the current location.</summary>
-        private readonly PerScreen<Dictionary<Vector2, SObject>> Gates = new PerScreen<Dictionary<Vector2, Object>>(() => new SerializableDictionary<Vector2, SObject>());
+        private readonly PerScreen<Dictionary<Vector2, Fence>> Gates = new(() => new SerializableDictionary<Vector2, Fence>());
 
         /// <summary>The last player tile position for which we checked for gates.</summary>
-        private readonly PerScreen<Vector2> LastPlayerTile = new PerScreen<Vector2>(() => new Vector2(-1));
+        private readonly PerScreen<Vector2> LastPlayerTile = new(() => new Vector2(-1));
 
 
         /*********
@@ -70,15 +70,32 @@ namespace AutoGate
                 return;
             this.LastPlayerTile.Value = playerTile;
 
-            // update all gates
-            var adjacentTiles = new HashSet<Vector2>(this.GetSearchTiles(playerTile));
-            foreach (var pair in this.Gates.Value)
+            // get gates that should be open
+            // (We need to do this before applying changes, so we don't close a double-gate when one side is out of range.)
+            HashSet<Vector2> shouldBeOpen = new();
+            foreach (Vector2 tile in this.GetSearchTiles(playerTile))
             {
-                Vector2 tile = pair.Key;
-                SObject gate = pair.Value;
+                if (!this.Gates.Value.ContainsKey(tile))
+                    continue;
 
-                if (gate.isPassable() != adjacentTiles.Contains(tile))
-                    gate.checkForAction(Game1.player);
+                shouldBeOpen.Add(tile);
+                foreach (Vector2 connectedTile in Utility.getAdjacentTileLocations(tile))
+                {
+                    if (this.Gates.Value.ContainsKey(connectedTile))
+                        shouldBeOpen.Add(connectedTile);
+                }
+            }
+
+            // step 2: update gates
+            foreach ((Vector2 tile, Fence gate) in this.Gates.Value)
+            {
+                bool open = shouldBeOpen.Contains(tile);
+                int expectedPosition = open
+                    ? Fence.gateOpenedPosition
+                    : Fence.gateClosedPosition;
+
+                if (gate.gatePosition.Value != expectedPosition)
+                    gate.toggleGate(Game1.player, open: open);
             }
         }
 
@@ -93,8 +110,8 @@ namespace AutoGate
                 Vector2 tile = pair.Key;
                 SObject obj = pair.Value;
 
-                if (obj.Name == "Gate")
-                    this.Gates.Value[tile] = obj;
+                if (obj is Fence fence && fence.isGate.Value)
+                    this.Gates.Value[tile] = fence;
             }
         }
 

@@ -3,6 +3,8 @@
 # Release notes
 ## Upcoming release
 * Updated for Stardew Valley 1.5.5.
+* Added support for gates placed on top of fences.
+* Fixed double-gates not always working consistently.
 
 ## 1.2.0
 Released 01 October 2021 for SMAPI 3.12.0 or later.
