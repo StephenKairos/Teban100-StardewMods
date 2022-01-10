@@ -1,6 +1,9 @@
 ﻿← [back to readme](README.md)
 
 # Release notes
+## Upcoming release
+* Fixed error for farmhands in multiplayer.
+
 ## 1.3.0
 Released 28 December 2021 for SMAPI 3.13.0 or later. Updated by Pathoschild.
 
