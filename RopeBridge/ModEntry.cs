@@ -4,6 +4,7 @@ using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Locations;
+using Teban100.Common;
 using xTile.Layers;
 using xTile.ObjectModel;
 using xTile.Tiles;
@@ -21,6 +22,8 @@ namespace RopeBridge
         /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
         {
+            CommonHelper.RemoveObsoleteFiles(this, "AutoGate.pdb");
+
             helper.Events.Player.Warped += this.OnWarped;
             helper.Events.World.ObjectListChanged += this.OnObjectListChanged;
             helper.Events.World.NpcListChanged += this.OnNpcListChanged;

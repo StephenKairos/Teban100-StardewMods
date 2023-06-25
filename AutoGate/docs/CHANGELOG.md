@@ -2,6 +2,7 @@
 
 # Release notes
 ## Upcoming release
+* Embedded `.pdb` data into the DLL, which fixes error line numbers in Linux/macOS logs.
 * Fixed gates placed on top of a fence not detected until you re-enter the location.
 
 ## 1.3.1
