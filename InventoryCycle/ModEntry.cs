@@ -38,9 +38,7 @@ namespace InventoryCycle
         /*********
         ** Private methods
         *********/
-        /// <inheritdoc cref="IInputEvents.ButtonPressed"/>
-        /// <param name="sender">The event sender.</param>
-        /// <param name="e">The event data.</param>
+        /// <inheritdoc cref="IInputEvents.ButtonPressed" />
         private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
         {
             if (e.Button == this.FrontKey)

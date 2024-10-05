@@ -18,8 +18,7 @@ namespace RopeBridge
         /*********
         ** Public methods
         *********/
-        /// <summary>The mod entry point, called after the mod is first loaded.</summary>
-        /// <param name="helper">Provides simplified APIs for writing mods.</param>
+        /// <inheritdoc />
         public override void Entry(IModHelper helper)
         {
             CommonHelper.RemoveObsoleteFiles(this, "AutoGate.pdb");
@@ -34,18 +33,14 @@ namespace RopeBridge
         /*********
         ** Private methods
         *********/
-        /// <inheritdoc cref="IPlayerEvents.Warped"/>
-        /// <param name="sender">The event sender.</param>
-        /// <param name="e">The event data.</param>
+        /// <inheritdoc cref="IPlayerEvents.Warped" />
         private void OnWarped(object sender, WarpedEventArgs e)
         {
             if (e.IsLocalPlayer)
                 this.FixLadders();
         }
 
-        /// <inheritdoc cref="IPlayerEvents.InventoryChanged"/>
-        /// <param name="sender">The event sender.</param>
-        /// <param name="e">The event data.</param>
+        /// <inheritdoc cref="IPlayerEvents.InventoryChanged" />
         private void OnInventoryChanged(object sender, InventoryChangedEventArgs e)
         {
             bool usedStaircase =
@@ -60,18 +55,14 @@ namespace RopeBridge
                 this.FixLadders();
         }
 
-        /// <inheritdoc cref="IWorldEvents.ObjectListChanged"/>
-        /// <param name="sender">The event sender.</param>
-        /// <param name="e">The event data.</param>
+        /// <inheritdoc cref="IWorldEvents.ObjectListChanged" />
         private void OnObjectListChanged(object sender, ObjectListChangedEventArgs e)
         {
             if (e.IsCurrentLocation)
                 this.FixLadders();
         }
 
-        /// <inheritdoc cref="IWorldEvents.NpcListChanged"/>
-        /// <param name="sender">The event sender.</param>
-        /// <param name="e">The event data.</param>
+        /// <inheritdoc cref="IWorldEvents.NpcListChanged" />
         private void OnNpcListChanged(object sender, NpcListChangedEventArgs e)
         {
             if (e.IsCurrentLocation && e.Removed.Any())

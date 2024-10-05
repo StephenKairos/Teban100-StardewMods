@@ -44,26 +44,20 @@ namespace AutoGate
         /*********
         ** Private methods
         *********/
-        /// <inheritdoc cref="IPlayerEvents.Warped"/>
-        /// <param name="sender">The event sender.</param>
-        /// <param name="e">The event data.</param>
+        /// <inheritdoc cref="IPlayerEvents.Warped" />
         private void OnWarped(object sender, WarpedEventArgs e)
         {
             if (e.IsLocalPlayer)
                 this.ResetFenceCache();
         }
 
-        /// <inheritdoc cref="IWorldEvents.ObjectListChanged"/>
-        /// <param name="sender">The event sender.</param>
-        /// <param name="e">The event data.</param>
+        /// <inheritdoc cref="IWorldEvents.ObjectListChanged" />
         private void OnObjectListChanged(object sender, ObjectListChangedEventArgs e)
         {
             this.ResetFenceCache();
         }
 
-        /// <inheritdoc cref="IGameLoopEvents.OneSecondUpdateTicked"/>
-        /// <param name="sender">The event sender.</param>
-        /// <param name="e">The event data.</param>
+        /// <inheritdoc cref="IGameLoopEvents.OneSecondUpdateTicked" />
         private void OnOneSecondUpdateTicked(object sender, OneSecondUpdateTickedEventArgs e)
         {
             Dictionary<Vector2, Fence> fences = this.Fences.Value;
@@ -84,9 +78,7 @@ namespace AutoGate
             }
         }
 
-        /// <inheritdoc cref="IGameLoopEvents.UpdateTicked"/>
-        /// <param name="sender">The event sender.</param>
-        /// <param name="e">The event data.</param>
+        /// <inheritdoc cref="IGameLoopEvents.UpdateTicked" />
         private void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
         {
             Dictionary<Vector2, Fence> gates = this.Gates.Value;
