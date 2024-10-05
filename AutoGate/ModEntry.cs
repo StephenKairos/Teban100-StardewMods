@@ -34,6 +34,7 @@ namespace AutoGate
         {
             CommonHelper.RemoveObsoleteFiles(this, "AutoGate.pdb");
 
+            helper.Events.GameLoop.SaveLoaded += this.OnSaveLoaded;
             helper.Events.Player.Warped += this.OnWarped;
             helper.Events.World.ObjectListChanged += this.OnObjectListChanged;
             helper.Events.GameLoop.OneSecondUpdateTicked += this.OnOneSecondUpdateTicked;
@@ -44,6 +45,12 @@ namespace AutoGate
         /*********
         ** Private methods
         *********/
+        /// <inheritdoc cref="IGameLoopEvents.SaveLoaded" />
+        private void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
+        {
+            this.ResetFenceCache();
+        }
+
         /// <inheritdoc cref="IPlayerEvents.Warped" />
         private void OnWarped(object sender, WarpedEventArgs e)
         {
