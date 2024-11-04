@@ -1,10 +1,9 @@
 using StardewModdingAPI;
 
-namespace InventoryCycle.Framework
+namespace InventoryCycle.Framework;
+
+internal class ModConfig
 {
-    internal class ModConfig
-    {
-        public SButton FrontCycleKey { get; set; } = SButton.E;
-        public SButton BackCycleKey { get; set; } = SButton.Q;
-    }
+    public SButton FrontCycleKey { get; set; } = SButton.E;
+    public SButton BackCycleKey { get; set; } = SButton.Q;
 }
