@@ -1,6 +1,12 @@
 ﻿← [back to readme](README.md)
 
 # Release notes
+## 1.3.4
+Released 04 November 2024 for SMAPI 4.1.0 or later. Updated by Pathoschild.
+
+* Updated for Stardew Valley 1.6.9.
+* Fixed gates not auto-opening immediately on reload if you slept in a tent or used a mod like QuickSave.
+
 ## 1.3.3
 Released 19 March 2024 for SMAPI 4.0.0 or later. Updated by Pathoschild.
 
