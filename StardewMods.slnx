@@ -8,6 +8,10 @@
     <File Path="LICENSE" />
     <File Path="README.md" />
   </Folder>
+  <Folder Name="/.root/.github/" />
+  <Folder Name="/.root/.github/workflows/">
+    <File Path=".github/workflows/build.yml" />
+  </Folder>
   <Project Path="AutoGate/AutoGate.csproj" />
   <Project Path="InventoryCycle/InventoryCycle.csproj" />
   <Project Path="RopeBridge/RopeBridge.csproj" />
