@@ -1,7 +1,7 @@
 ﻿{
     "Name": "AutoGate",
     "Author": "Teban100",
-    "Version": "1.3.5",
+    "Version": "%ProjectVersion%",
     "Description": "Makes passing through gates automatic.",
     "UniqueID": "AutoGate",
     "EntryDll": "AutoGate.dll",
