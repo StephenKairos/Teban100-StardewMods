@@ -34,14 +34,14 @@ internal class ModEntry : Mod
     ** Private methods
     *********/
     /// <inheritdoc cref="IPlayerEvents.Warped" />
-    private void OnWarped(object sender, WarpedEventArgs e)
+    private void OnWarped(object? sender, WarpedEventArgs e)
     {
         if (e.IsLocalPlayer)
             this.FixLadders();
     }
 
     /// <inheritdoc cref="IPlayerEvents.InventoryChanged" />
-    private void OnInventoryChanged(object sender, InventoryChangedEventArgs e)
+    private void OnInventoryChanged(object? sender, InventoryChangedEventArgs e)
     {
         bool usedStaircase =
             e.IsLocalPlayer
@@ -56,14 +56,14 @@ internal class ModEntry : Mod
     }
 
     /// <inheritdoc cref="IWorldEvents.ObjectListChanged" />
-    private void OnObjectListChanged(object sender, ObjectListChangedEventArgs e)
+    private void OnObjectListChanged(object? sender, ObjectListChangedEventArgs e)
     {
         if (e.IsCurrentLocation)
             this.FixLadders();
     }
 
     /// <inheritdoc cref="IWorldEvents.NpcListChanged" />
-    private void OnNpcListChanged(object sender, NpcListChangedEventArgs e)
+    private void OnNpcListChanged(object? sender, NpcListChangedEventArgs e)
     {
         if (e.IsCurrentLocation && e.Removed.Any())
             this.FixLadders();
@@ -74,7 +74,7 @@ internal class ModEntry : Mod
     {
         if (Game1.currentLocation is MineShaft)
         {
-            Layer layer = Game1.currentLocation.map.GetLayer("Buildings");
+            Layer? layer = Game1.currentLocation.map.GetLayer("Buildings");
             if (layer == null)
                 return;
 
@@ -82,7 +82,7 @@ internal class ModEntry : Mod
             {
                 for (int y = 0; y < layer.LayerHeight; y++)
                 {
-                    Tile tile = layer.Tiles[x, y];
+                    Tile? tile = layer.Tiles[x, y];
                     if (tile?.TileIndex == 173)
                         tile.TileIndexProperties.Add(new KeyValuePair<string, PropertyValue>("Passable", "T"));
                 }
