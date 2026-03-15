@@ -39,7 +39,7 @@ internal class ModEntry : Mod
     ** Private methods
     *********/
     /// <inheritdoc cref="IInputEvents.ButtonPressed" />
-    private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
+    private void OnButtonPressed(object? sender, ButtonPressedEventArgs e)
     {
         if (e.Button == this.FrontKey)
         {

@@ -46,26 +46,26 @@ internal class ModEntry : Mod
     ** Private methods
     *********/
     /// <inheritdoc cref="IGameLoopEvents.SaveLoaded" />
-    private void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
+    private void OnSaveLoaded(object? sender, SaveLoadedEventArgs e)
     {
         this.ResetFenceCache();
     }
 
     /// <inheritdoc cref="IPlayerEvents.Warped" />
-    private void OnWarped(object sender, WarpedEventArgs e)
+    private void OnWarped(object? sender, WarpedEventArgs e)
     {
         if (e.IsLocalPlayer)
             this.ResetFenceCache();
     }
 
     /// <inheritdoc cref="IWorldEvents.ObjectListChanged" />
-    private void OnObjectListChanged(object sender, ObjectListChangedEventArgs e)
+    private void OnObjectListChanged(object? sender, ObjectListChangedEventArgs e)
     {
         this.ResetFenceCache();
     }
 
     /// <inheritdoc cref="IGameLoopEvents.OneSecondUpdateTicked" />
-    private void OnOneSecondUpdateTicked(object sender, OneSecondUpdateTickedEventArgs e)
+    private void OnOneSecondUpdateTicked(object? sender, OneSecondUpdateTickedEventArgs e)
     {
         Dictionary<Vector2, Fence> fences = this.Fences.Value;
 
@@ -86,7 +86,7 @@ internal class ModEntry : Mod
     }
 
     /// <inheritdoc cref="IGameLoopEvents.UpdateTicked" />
-    private void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
+    private void OnUpdateTicked(object? sender, UpdateTickedEventArgs e)
     {
         Dictionary<Vector2, Fence> gates = this.Gates.Value;
 
